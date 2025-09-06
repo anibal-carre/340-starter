@@ -2,5 +2,265 @@
 *,
 *:before,
 *:after {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+.main-wrapper {
+  border: 8px solid;
+  border-image: repeating-linear-gradient(45deg,
+      #000 0px,
+      #000 10px,
+      #fff 10px,
+      #fff 20px) 8;
+  min-height: 100vh;
+  background-color: white;
+}
+
+#top-header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.siteName {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.account-link {
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.account-link:hover {
+  text-decoration: underline;
+}
+
+.navigation {
+  background-color: #2c3e50;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  display: block;
+  padding: 1rem;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: #34495e;
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.welcome-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.featured-car {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+  gap: 2rem;
+}
+
+.car-info {
+  text-align: center;
+}
+
+.car-title {
+  font-size: 1.5rem;
+  color: #17a2b8;
+  margin-bottom: 1rem;
+}
+
+.car-features {
+  list-style: none;
+  margin-bottom: 1.5rem;
+  color: #17a2b8;
+}
+
+.car-features li {
+  margin-bottom: 0.5rem;
+}
+
+button {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #138496;
+}
+
+.car-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+.content-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.upgrades-section h2,
+.reviews-section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.upgrades-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.upgrade-item {
+  text-align: center;
+}
+
+.upgrade-icon {
+  background-color: #17a2b8;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.upgrade-icon img {
+  max-width: 60px;
+  max-height: 60px;
+}
+
+.upgrade-name {
+  font-weight: bold;
+  color: #17a2b8;
+  text-decoration: underline;
+}
+
+.reviews-list {
+  list-style: none;
+}
+
+.reviews-list li {
+  margin-bottom: 0.75rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.reviews-list li::before {
+  content: "•";
+  color: #17a2b8;
+  position: absolute;
+  left: 0;
+}
+
+footer {
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+@media (min-width: 768px) {
+  .featured-car {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .car-info {
+    text-align: left;
+    flex: 1;
+  }
+
+  .car-image {
+    flex: 1;
+    text-align: right;
+  }
+
+  .content-sections {
+    flex-direction: row;
+    gap: 4rem;
+  }
+
+  .upgrades-section,
+  .reviews-section {
+    flex: 1;
+  }
+
+  .upgrades-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav-list {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .welcome-section h2 {
+    font-size: 2rem;
+  }
+
+  .car-title {
+    font-size: 1.8rem;
+  }
+
+  .upgrades-section h2,
+  .reviews-section h2 {
+    font-size: 1.5rem;
+  }
 }
