@@ -1,9 +1,13 @@
-<% if (title) { %>
-    <h1>
-        <%= title %>
-    </h1>
-    <% } else { res.redirect('/') } %>
+<main>
+    <% if (title) { %>
+        <h1>
+            <%= title %>
+        </h1>
+        <% } %>
 
-        <%# messages() %>
-
-            <%- grid %>
+            <% if (grid && grid.trim() !=="" ) { %>
+                <%- grid %>
+                    <% } else { %>
+                        <p class="notice">No vehicles found for this classification.</p>
+                        <% } %>
+</main>

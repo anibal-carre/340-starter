@@ -12,6 +12,7 @@ const app = express()
 const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
 const baseController = require("./controllers/baseController")
+const utilities = require("./utilities/")
 
 
 /* ***********************
@@ -37,6 +38,9 @@ app.use("/inv", inventoryRoute)
  *************************/
 const port = process.env.PORT
 const host = process.env.HOST
+
+app.use(utilities.handle404)
+app.use(utilities.handle500)
 
 /* ***********************
  * Log statement to confirm server operation
