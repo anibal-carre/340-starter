@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+
+        <% if (messages && messages.length> 0) { %>
+            <div class="flash-message">
+                <% messages.forEach(function(message){ %>
+                    <p>
+                        <%= message %>
+                    </p>
+                    <% }) %>
+            </div>
+            <% } %>
+
+                <nav>
+                    <ul>
+                        <li><a href="/inv/add-classification">Add New Classification</a></li>
+                        <li><a href="/inv/add-inventory">Add New Inventory Item</a></li>
+                    </ul>
+                </nav>
+    </main>
+</body>
+
+</html>
