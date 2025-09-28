@@ -13,7 +13,36 @@ const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
 const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/")
+const session = require("express-session")
+const pool = require('./database/')
+const accountRoute = require("./routes/accountRoute")
+const bodyParser = require("body-parser")
 
+
+
+/* ***********************
+ * Middleware
+ * ************************/
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}))
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+// Express Messages Middleware
+app.use(require('connect-flash')())
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
 
 /* ***********************
  * View Engine and Templates
@@ -22,6 +51,7 @@ app.set("view engine", "ejs")
 app.set("views", __dirname + "/views")
 app.set("layout", "layouts/layout")
 app.use(expressLayouts)
+
 
 /* ***********************
  * Routes
@@ -32,6 +62,12 @@ app.use(static)
 app.get("/", baseController.buildHome)
 // Inventory routes
 app.use("/inv", inventoryRoute)
+
+/**
+ * Account Route
+ */
+app.use("/account", accountRoute)
+
 /* ***********************
  * Local Server Information
  * Values from .env (environment) file
@@ -41,6 +77,9 @@ const host = process.env.HOST
 
 app.use(utilities.handle404)
 app.use(utilities.handle500)
+
+
+
 
 /* ***********************
  * Log statement to confirm server operation
