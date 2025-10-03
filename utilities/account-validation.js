@@ -3,6 +3,44 @@ const utilities = require(".")
 const { body, validationResult } = require("express-validator")
 const validate = {}
 
+
+/*  **********************************
+  *  Login Data Validation Rules
+  * ********************************* */
+validate.loginRules = () => {
+    return [
+        body("account_email")
+            .trim()
+            .isEmail()
+            .normalizeEmail()
+            .withMessage("Please enter a valid email address."),
+
+        body("account_password")
+            .trim()
+            .notEmpty()
+            .withMessage("Please enter your password."),
+    ]
+}
+
+/* ******************************
+ * Check login data and return errors or continue
+ * ***************************** */
+validate.checkLoginData = async (req, res, next) => {
+    const { account_email } = req.body
+    let errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        res.render("account/login", {
+            errors,
+            title: "Login",
+            nav,
+            account_email,
+        })
+        return
+    }
+    next()
+}
+
 /*  **********************************
   *  Registration Data Validation Rules
   * ********************************* */
