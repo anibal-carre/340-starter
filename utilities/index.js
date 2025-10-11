@@ -1,5 +1,8 @@
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 const invModel = require("../models/inventory-model")
 const Util = {}
+
 
 /* ************************
  * Constructs the nav HTML unordered list
@@ -148,7 +151,69 @@ Util.verifyToken = function (req, res, next) {
     }
 }
 
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+    try {
+        if (req.cookies && req.cookies.jwt) {
+            jwt.verify(
+                req.cookies.jwt,
+                process.env.ACCESS_TOKEN_SECRET,
+                function (err, accountData) {
+                    if (err) {
+                        console.error("JWT verification error:", err.message)
+                        req.flash("notice", "Your session has expired. Please log in again.")
+                        res.clearCookie("jwt")
+                        return res.redirect("/account/login")
+                    }
+                    res.locals.accountData = accountData
+                    res.locals.loggedin = true
+                    next()
+                }
+            )
+        } else {
+            res.locals.loggedin = false
+            next()
+        }
+    } catch (error) {
+        console.error("checkJWTToken error:", error)
+        req.flash("notice", "Authentication error. Please log in again.")
+        res.clearCookie("jwt")
+        return res.redirect("/account/login")
+    }
+}
+
+
 Util.handleErrors = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next)
+
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+    if (res.locals.loggedin) {
+        next()
+    } else {
+        req.flash("notice", "Please log in.")
+        return res.redirect("/account/login")
+    }
+}
+
+/* ****************************************
+ *  Build classification select list
+ * **************************************** */
+Util.buildClassificationList = async function (selectedClassificationId = null) {
+    const data = await invModel.getClassifications()
+    let list = '<select name="classification_id" id="classification_id" required>'
+    list += '<option value="">Choose a Classification</option>'
+    data.rows.forEach((row) => {
+        list += `<option value="${row.classification_id}" ${selectedClassificationId == row.classification_id ? "selected" : ""
+            }>${row.classification_name}</option>`
+    })
+    list += "</select>"
+    return list
+}
 
 module.exports = Util

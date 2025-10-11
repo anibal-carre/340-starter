@@ -48,6 +48,9 @@ app.use(function (req, res, next) {
 // Cookie Parser
 app.use(cookieParser())
 
+// Check JWT
+app.use(utilities.checkJWTToken)
+
 /* ***********************
  * View Engine and Templates
  *************************/

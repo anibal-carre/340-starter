@@ -3,6 +3,18 @@
     <span class="siteName">
       <a href="/" title="Return to home page">CSE Motors</a>
     </span>
-    <a href="/account/login" class="account-link" title="Click to log in">My Account</a>
+
+    <% if (locals.account) { %>
+      <span class="welcome">Welcome <%= locals.account.firstname %></span>
+
+      <% if (locals.account.account_type==='Employee' || locals.account.account_type==='Admin' ) { %>
+        <a href="/inv/" class="inventory-link">Inventory Management</a>
+        <% } %>
+
+          <a href="/auth/logout" class="logout-link" title="Click to log out">Logout</a>
+
+          <% } else { %>
+            <a href="/account/login" class="account-link" title="Click to log in">My Account</a>
+            <% } %>
   </div>
 </header>

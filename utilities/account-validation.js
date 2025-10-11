@@ -112,4 +112,42 @@ validate.checkRegData = async (req, res, next) => {
     next()
 }
 
+validate.checkAccountUpdate = async (req, res, next) => {
+    const { account_id, firstname, lastname, email } = req.body
+    let errors = []
+
+    if (!firstname || firstname.trim() === "") errors.push("First name is required")
+    if (!lastname || lastname.trim() === "") errors.push("Last name is required")
+    if (!email || email.trim() === "") errors.push("Email is required")
+
+    if (errors.length > 0) {
+        return res.status(400).render("account/update-account", {
+            title: "Update Account",
+            errors,
+            account: req.body,
+            message: null
+        })
+    }
+    next()
+}
+
+
+validate.checkPasswordUpdate = async (req, res, next) => {
+    const { password } = req.body
+    let errors = []
+
+    if (!password || password.length < 8) errors.push("Password must be at least 8 characters")
+
+    if (errors.length > 0) {
+        return res.status(400).render("account/update-account", {
+            title: "Update Account",
+            errors,
+            account: req.body,
+            message: null
+        })
+    }
+    next()
+}
+
+
 module.exports = validate

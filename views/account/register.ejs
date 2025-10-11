@@ -1,75 +1,187 @@
-<%- include('../partials/header') %>
+<div class="register-container">
+    <h1>
+        <%= title %>
+    </h1>
 
-    <div class="register-container">
-        <h1>
-            <%= title %>
-        </h1>
+    <% if (messages && messages.length> 0) { %>
+        <div class="flash-message">
+            <% messages.forEach(msg=> { %>
+                <p>
+                    <%= msg %>
+                </p>
+                <% }) %>
+        </div>
+        <% } %>
 
-        <% if (messages && messages.length> 0) { %>
-            <div class="flash-message">
-                <% messages.forEach(msg=> { %>
-                    <p>
-                        <%= msg %>
-                    </p>
-                    <% }) %>
-            </div>
-            <% } %>
+            <% if (errors) { %>
+                <ul class="notice">
+                    <% errors.array().forEach(error=> { %>
+                        <li>
+                            <%= error.msg %>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } %>
 
-                <% if (errors) { %>
-                    <ul class="notice">
-                        <% errors.array().forEach(error=> { %>
-                            <li>
-                                <%= error.msg %>
-                            </li>
-                            <% }) %>
-                    </ul>
-                    <% } %>
+                    <form action="/account/register" method="post" class="register-form">
+                        <label for="firstname">First name</label>
+                        <input type="text" name="account_firstname" id="accountFirstname" required
+                            value="<%= locals.account_firstname %>">
 
-                        <form action="/account/register" method="post" class="register-form">
-                            <label for="firstname">First name</label>
-                            <input type="text" name="account_firstname" id="accountFirstname" required
-                                value="<%= locals.account_firstname %>">
+                        <label for="lastname">Last name</label>
+                        <input type="text" id="lastname" name="account_lastname"
+                            value="<%= typeof account_lastname !== 'undefined' ? account_lastname : '' %>" required>
 
-                            <label for="lastname">Last name</label>
-                            <input type="text" id="lastname" name="account_lastname"
-                                value="<%= typeof account_lastname !== 'undefined' ? account_lastname : '' %>" required>
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" name="account_email"
+                            value="<%= typeof account_email !== 'undefined' ? account_email : '' %>" required>
 
-                            <label for="email">Email address</label>
-                            <input type="email" id="email" name="account_email"
-                                value="<%= typeof account_email !== 'undefined' ? account_email : '' %>" required>
+                        <label for="password">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="account_password" required
+                                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+                                placeholder="Min 12 chars, 1 uppercase, 1 number, 1 special char">
+                            <button type="button" class="toggle-password">Show</button>
 
-                            <label for="password">Password</label>
-                            <div class="password-wrapper">
-                                <div class="password-requirements">
-                                    Passwords must be at least <strong>12 characters</strong>
-                                    and contain at least <strong>1 number</strong>,
-                                    <strong>1 uppercase letter</strong>, and
-                                    <strong>1 special character</strong>.
-                                </div>
-
-                                <input type="password" id="password" name="account_password" required
-                                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
-                                    placeholder="Min 12 chars, 1 uppercase, 1 number, 1 special char">
-                                <button type="button" class="toggle-password">Show</button>
+                            <div id="passwordRequirements" class="password-requirements">
+                                <p><strong>Password requirements:</strong></p>
+                                <ul>
+                                    <li>At least 12 characters</li>
+                                    <li>At least 1 uppercase letter</li>
+                                    <li>At least 1 number</li>
+                                    <li>At least 1 special character</li>
+                                </ul>
                             </div>
+                        </div>
 
-                            <button type="submit">Register</button>
-                        </form>
-    </div>
+                        <button type="submit" class="btn-register">Register</button>
+                    </form>
+</div>
 
-    <script>
-        const pwd = document.getElementById("password");
-        const toggle = document.querySelector(".toggle-password");
+<style>
+    .register-container {
+        max-width: 400px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
 
-        toggle.addEventListener("click", () => {
-            if (pwd.type === "password") {
-                pwd.type = "text";
-                toggle.innerText = "Hide";
-            } else {
-                pwd.type = "password";
-                toggle.innerText = "Show";
-            }
-        });
-    </script>
+    .register-form label {
+        font-weight: 600;
+        margin-top: 1rem;
+        display: block;
+        color: #333;
+    }
 
-    <%- include('../partials/footer') %>
+    .register-form input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    .register-form input:focus {
+        border-color: #0077cc;
+        box-shadow: 0 0 4px rgba(0, 119, 204, 0.4);
+        outline: none;
+    }
+
+    .password-wrapper {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        margin-top: 0.5rem;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 9px;
+        background-color: #0077cc;
+        border: none;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        font-size: 0.8rem;
+    }
+
+    .toggle-password:hover {
+        background-color: #005fa3;
+    }
+
+    .password-requirements {
+        display: none;
+        font-size: 0.8rem;
+        color: #555;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-top: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .password-requirements ul {
+        margin: 6px 0 0;
+        padding-left: 20px;
+    }
+
+    .btn-register {
+        margin-top: 1.2rem;
+        background: #0077cc;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.3s ease;
+        width: 100%;
+    }
+
+    .btn-register:hover {
+        background: #005fa3;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    const pwd = document.getElementById("password");
+    const toggle = document.querySelector(".toggle-password");
+    const requirements = document.getElementById("passwordRequirements");
+
+    pwd.addEventListener("input", () => {
+        requirements.style.display = pwd.value.length > 0 ? "block" : "none";
+    });
+
+    pwd.addEventListener("blur", () => {
+        if (pwd.value.length === 0) {
+            requirements.style.display = "none";
+        }
+    });
+
+    toggle.addEventListener("click", () => {
+        const isPassword = pwd.type === "password";
+        pwd.type = isPassword ? "text" : "password";
+        toggle.innerText = isPassword ? "Hide" : "Show";
+    });
+</script>

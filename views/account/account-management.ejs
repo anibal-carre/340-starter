@@ -1,0 +1,7 @@
+<h2>Welcome <%= account.firstname %>
+</h2>
+<% if (account.account_type==='Employee' || account.account_type==='Admin' ) { %>
+    <h3>Inventory Management</h3>
+    <p><a href="/inv/">Go to Inventory Management</a></p>
+    <% } %>
+        <p><a href="/account/update/<%= account.account_id %>">Update Account Info</a></p>
